@@ -1,0 +1,34 @@
+# Core ML/DS Libraries
+pandas
+numpy
+torch
+datasets
+transformers
+peft
+evaluate
+accelerate # Often needed by Trainer/evaluate
+
+# EDA and Visualization
+matplotlib
+seaborn
+
+# SQL Parsing/Normalization
+sqlparse
+sqlglot
+
+# Evaluation Metrics Dependencies
+rouge_score # For ROUGE metric in evaluate
+nltk        # For ROUGE metric in evaluate
+absl-py     # For ROUGE metric in evaluate
+
+# Utilities
+python-dotenv # For loading .env files
+tqdm          # Progress bars
+Jupyter      # For Jupyter Notebook
+ipykernel      # For Jupyter Notebook kernel
+ipywidgets    # For Jupyter Notebook widgets
+ipython      # For Jupyter Notebook features
+
+
+# Note: bitsandbytes is excluded as it wasn't used due to MPS environment. Install if running on GPU and need quantization.
+# Note: ipywidgets/ipython are excluded as the final inference script uses text input.
