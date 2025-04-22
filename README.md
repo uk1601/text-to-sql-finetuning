@@ -216,6 +216,17 @@ This approach ensures the model only learns to predict the SQL response and not 
 
 The experimental results compare the performance of the baseline model against three LoRA-fine-tuned variants with different rank values.
 
+
+A small explanation about the metrics considered
+#### BLEU (Bilingual Evaluation Understudy):
+A precision-based metric measuring n-gram overlap between generated and reference SQL. Scores range from 0 to 1, where higher values indicate better correlation with human references. BLEU penalizes outputs that are too short through a brevity penalty and considers different n-gram lengths to capture both lexical precision and sequence ordering.
+#### ROUGE-1:
+Measures the overlap of unigrams (single words/tokens) between the generated SQL and reference. It focuses on recall (how many reference tokens appear in the generation), making it useful for evaluating if key elements like table names, column names, and SQL keywords are correctly included in the output.
+#### ROUGE-2:
+Assesses the overlap of bigrams (pairs of consecutive words) between generated and reference SQL. This metric captures more of the structural and syntactic properties of SQL, as it evaluates whether word pairs (like "GROUP BY", "ORDER BY", or "column_name FROM") appear in the proper sequence.
+#### ROUGE-L:
+Based on the Longest Common Subsequence (LCS) between the generated and reference SQL, focusing on similar word sequences regardless of exact positions. This is particularly valuable for SQL evaluation as it can recognize when clauses appear in different orders but maintain semantic equivalence, capturing structural similarity without requiring exact matching.
+
 ### Performance Metrics Comparison
 
 | Model | BLEU | ROUGE-1 | ROUGE-2 | ROUGE-L | Exact Match |
