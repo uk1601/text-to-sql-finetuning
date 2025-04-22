@@ -1,4 +1,4 @@
-# %% Imports
+# %%
 import os
 import sys
 import pandas as pd
@@ -30,7 +30,8 @@ from peft import PeftModel
 import evaluate # Hugging Face Evaluate library
 import sqlparse # For SQL normalization
 
-# %% Setup Logging
+
+# %%
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
@@ -44,7 +45,8 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
-# %% Configuration Class (Edit parameters here)
+
+# %%
 class EvalConfig:
     """Configuration settings for the evaluation script."""
     # --- Model Identification ---
@@ -52,16 +54,16 @@ class EvalConfig:
     # List of adapter paths (relative to the script location)
     # Add the paths to the 'final_adapter' directories from your runs
     adapter_paths: Dict[str, str] = {
-        "LoRA_r4_lr2e-5": "models/gemma3_finetuned_20250421_163503_r4_lr2e-5/final_adapter",
-        "LoRA_r8_lr2e-5": "models/gemma3_finetuned_20250421_164347_r8_lr2e-5/final_adapter",
-        "LoRA_r16_lr2e-5": "models/gemma3_finetuned_20250421_163914_r16_lr2e-5/final_adapter",
+        "LoRA_r4_lr2e-5": "models/gemma3_finetuned_20250421_201739_r4_lr2e-5/final_adapter",
+        "LoRA_r8_lr2e-5": "models/gemma3_finetuned_20250421_212338_r8_lr2e-5/final_adapter",
+        "LoRA_r16_lr2e-5": "models/gemma3_finetuned_20250421_224200_r16_lr2e-5/final_adapter",
     }
     # Optionally add more adapters if you run more experiments
 
     # --- Dataset ---
     dataset_name: str = "gretelai/synthetic_text_to_sql"
     # Use the same test subset size as in training evaluation, or -1 for full test set
-    test_subset_size: int = 3 # Reduced for quick testing, set back to 30 or -1
+    test_subset_size: int = 15 # Reduced for quick testing, set back to 30 or -1
     seed: int = 42 # Seed for subset selection if used
 
     # --- Evaluation Parameters ---
@@ -82,7 +84,8 @@ class EvalConfig:
     evaluation_output_dir: str = "evaluation" # Name of the subdirectory for outputs
 
 
-# %% Setup Environment (No changes needed here)
+
+# %%
 def setup_eval_environment(config: EvalConfig):
     """Set up seeds, device, and MPS fallback."""
     random.seed(config.seed)
@@ -108,7 +111,8 @@ def setup_eval_environment(config: EvalConfig):
 
     return device
 
-# %% Load Test Data (No changes needed here)
+
+# %%
 def load_test_data(config: EvalConfig):
     """Load and prepare the test dataset subset."""
     logger.info(f"Loading dataset: {config.dataset_name}")
@@ -134,7 +138,8 @@ def load_test_data(config: EvalConfig):
     logger.info(f"Using {len(test_dataset)} examples for evaluation.")
     return test_dataset
 
-# %% Prepare Input Prompt (No changes needed here)
+
+# %%
 def format_input_for_generation(example, tokenizer):
     """Formats the prompt using the chat template for generation."""
     prompt = example['sql_prompt']
@@ -161,7 +166,8 @@ def format_input_for_generation(example, tokenizer):
 
     return formatted_prompt
 
-# %% Load Model Function (No changes needed here)
+
+# %%
 def load_evaluation_model(model_name_or_path, base_model_name, device, is_adapter=False, hf_token=None):
     """Loads either the base model or a PEFT adapter model."""
     logger.info(f"Loading model: {model_name_or_path}")
@@ -211,7 +217,8 @@ def load_evaluation_model(model_name_or_path, base_model_name, device, is_adapte
     logger.info("Model loaded and set to evaluation mode.")
     return model
 
-# %% Generation Function (No changes needed here)
+
+# %%
 def generate_predictions(model, tokenizer, dataset, config, device):
     """Generate predictions for the entire dataset."""
     predictions = []
@@ -279,7 +286,8 @@ def generate_predictions(model, tokenizer, dataset, config, device):
     logger.info("Generation complete.")
     return predictions, references
 
-# %% Metrics Calculation (No changes needed here)
+
+# %%
 def normalize_sql(query):
     """Normalize SQL query for comparison."""
     try:
@@ -342,7 +350,8 @@ def compute_metrics(predictions, references, metrics_to_compute):
 
     return results
 
-# %% Main Evaluation Loop
+
+# %%
 def run_evaluation():
     """Run the full evaluation pipeline."""
     config = EvalConfig()
@@ -460,7 +469,8 @@ def run_evaluation():
     logger.info("Evaluation script finished.")
 
 
-# %% Run Evaluation
+
+# %%
 if __name__ == "__main__":
     # Check if running in an interactive environment (like Jupyter)
     if 'get_ipython' in globals() or 'google.colab' in sys.modules or os.environ.get("IPYKERNEL_CELL_NAME"):
@@ -469,3 +479,6 @@ if __name__ == "__main__":
         logger.info("Script appears to be running in a non-interactive environment.")
         logger.info("Running evaluation...")
         run_evaluation()
+
+
+

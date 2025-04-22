@@ -1,16 +1,89 @@
 reference,prediction
-"SELECT name, maintenance_cost FROM MilitaryEquipment WHERE region = 'Atlantic' AND maintenance_cost < 5000;","```sql
-SELECT name, maintenance_cost
-FROM MilitaryEquipment
-WHERE maintenance_cost < 5000;
-```俊"
+"SELECT name, maintenance_cost FROM MilitaryEquipment WHERE region = 'Atlantic' AND maintenance_cost < 5000;",```sql
 "INSERT INTO volunteers (id, organization_id, name) VALUES (5, 1, 'Mohammed Ali'), (6, 1, 'Sara Ahmed'), (7, 1, 'Pablo Rodriguez');","```sql
-INSERT INTO organizations (id, name) VALUES (1, 'Doctors Without Borders')
-INSERT INTO volunteers (id, organization_id, name) VALUES (101, 1, 'Jane Doe');
-INSERT INTO volunteers (id, organization_id, name) VALUES (102, 1, 'John Smith');
-INSERT INTO volunteers (id, organization_id, name) VALUES (103, 1, 'Alice Brown');
-```புலன்மளிப்பு
-சரியான SQL query is provided, based on the given context.
-யானة ஒரு சாத்தியமான பிழை அல்லது தவறான பதில் மூலம், குறியீடு சிக்கலானதாக இருக்கலாம்.
-யானة ஒரு சாத்தியமான பிழை அல்லது தவறான பதில் மூலம், குறியீடு சிக்கலானதாக இருக்கலாம்."
-"SELECT carrier_name, COUNT(*) as count FROM shipment GROUP BY carrier_name;",```sql
+INSERT INTO organizations (id, name) VALUES (1, 3);
+INSERT INTO volunteers (id, organization_id) VALUES (1, 1);
+INSERT INTO volunteers (id, organization_id) VALUES (1, 2);
+INSERT INTO volunteers (id, organization_id) VALUES (2, 1);
+INSERT INTO volunteers (id, organization_id) VALUES (2, 2);
+INSERT INTO volunteers (id, organization_id) VALUES (3, 1);
+```چند بار ها انجام شد.چند بار انجام شد: 5
+Apollo حدیسه ای، پیrogram ها را مدیریت، و به طور کلی به عنوان ابزار مدیریت برنامه برای پیrogram ها.  این برنامه برای ایجاد یک برنامه یادگیری در یک سازمان یا برنامه، و مدیریت آن را ایجاد می کند. Apollo شامل یک رابط کاربری قدرتمند و آسان برای استفاده برای راه‌اندازی و مدیریت برنامه و پیrogram است."
+"SELECT carrier_name, COUNT(*) as count FROM shipment GROUP BY carrier_name;","```sql
+SELECT carrier_name, COUNT(*) AS shipment_count
+FROM shipment
+GROUP BY carrier_name
+ORDER BY carrier_name;
+```چند تا به اطلاعات بیشتری برای پردازش در زمینه را نیاز است. Slope:
+*   What are the expected output format?ख्या
+tained? responded. कदाचित بهتر است بگویم."
+"SELECT position, AVG(height_feet + height_inches / 12) as avg_height FROM nba_players_height JOIN nba_players ON nba_players_height.player_id = nba_players.id GROUP BY position;","```sql
+SELECT
+    position,
+    AVG(height_inches) AS average_height
+FROM
+    nba_players
+GROUP BY
+    position;
+```چرا?"
+"INSERT INTO crops (id, farm_id, crop, yield, year) VALUES (5, (SELECT id FROM farms WHERE name = 'Nourishing Harvest'), 'amaranth', 50, 2023);","```sql
+INSERT INTO farms (name, location, size)
+SELECT 'amaranth', 'Nourishing Harvest', 120.0 -- Assuming size is in square meters or equivalent units
+WHERE year = 2023;
+```"
+"SELECT city, COUNT(*) FROM asian_sites WHERE city IN ('Tokyo', 'Seoul') AND type = 'historical' GROUP BY city;","```sql
+SELECT COUNT(*) FROM asian_sites WHERE city IN ('Tokyo', 'Seoul');
+```چناناً, SQL statement for the request is:"
+"SELECT project_id, project_name, DATEDIFF('day', start_date, end_date) AS project_duration FROM Defense_Project_Timelines WHERE DATEDIFF('day', start_date, end_date) > AVG(DATEDIFF('day', start_date, end_date)) OVER (PARTITION BY NULL);","```sql
+SELECT project_name
+FROM Defense_Project_Timelines
+WHERE end_date > (SELECT AVG(end_date) FROM Defense_Project_Timelines);
+```"
+"SELECT r.region_name, (COUNT(m.subscriber_id) * 100.0 / (COUNT(m.subscriber_id) + COUNT(b.subscriber_id))) AS mobile_percentage, (COUNT(b.subscriber_id) * 100.0 / (COUNT(m.subscriber_id) + COUNT(b.subscriber_id))) AS broadband_percentage FROM regions r LEFT JOIN mobile_subscribers m ON r.region_id = m.region_id LEFT JOIN broadband_subscribers b ON r.region_id = b.region_id GROUP BY r.region_id;","(4, 'West');
+SELECT region_name, COUNT(DISTINCT subscriber_id) as subscriber_count, SUM(CASE WHEN region_id = 1 THEN 1 ELSE 0 END) AS mobile_count, SUM(CASE WHEN region_id = 2 THEN 1 ELSE 0 END) AS broadband_count FROM mobile_subscribers WHERE region_id IN (1, 2) AND region_id IN (1, 2) AND region_id IN (1, 2);
+GROUP BY region_name;
+```"
+SELECT SUM(Salary) FROM Employees;,"```sql
+SELECT SUM(Salary) AS TotalSalaryExpense
+FROM Employees;
+```"
+"SELECT SUM(s.quantity) FROM sales_2 s WHERE s.product = 'shoes' AND s.size IN (8, 9) AND s.country = 'UK';","```sql
+SELECT SUM(quantity) AS total_quantity
+FROM sales_2
+WHERE size = '8' OR size = '9' AND country = 'UK';
+```چندین راه حل برای این پرسش وجود دارد. در اینجا یکی از آنها وجود دارد:"
+"SELECT * FROM SocialImpactInvestments WHERE Sector = 'Agriculture' AND ESGScore > 85 AND InvestorCountry = 'France' ORDER BY InvestmentDate, ESGScore DESC;","```sql
+SELECT
+    InvestmentID,
+    InvestmentDate,
+    ESGScore,
+    InvestorCountry
+FROM
+    SocialImpactInvestments
+WHERE
+    InvestorCountry = 'France' AND ESGScore > 85
+ORDER BY
+    InvestmentDate DESC,
+    ESGScore DESC;
+```چندتعداد برای کمک به حل این مشکل وجود دارد."
+"SELECT fs.name AS species_name, AVG(av.dissolved_oxygen) AS avg_dissolved_oxygen FROM fish_inventory fi JOIN fish_farms ff ON fi.fish_farm_id = ff.id JOIN fish_species fs ON fi.fish_species_id = fs.id JOIN (SELECT fish_species_id, AVG(dissolved_oxygen) AS dissolved_oxygen FROM water_quality GROUP BY fish_species_id) av ON fs.id = av.fish_species_id GROUP BY fs.name;","10); INSERT INTO fish_inventory (fish_farm_id, fish_species_id, quantity) VALUES (1, 2, 5); INSERT INTO fish_inventory (fish_farm_id, fish_species_id, quantity) VALUES (1, 1, 15); INSERT INTO fish_inventory (fish_farm_id, fish_species_id, quantity) VALUES (1, 2, 8); INSERT INTO fish_inventory (fish_farm_id, fish_species_id, quantity) VALUES (1, 1, 12); INSERT INTO fish_inventory (fish_farm_id, fish_species_id, quantity) VALUES (1, 2, 7); INSERT INTO fish_inventory (fish_farm_id, fish_species_id, quantity) VALUES (1, 1, 9); INSERT INTO fish_inventory (fish_farm_id, fish_species_id, quantity) VALUES (2, 2, 3); INSERT INTO fish_inventory (fish_farm_id, fish_species_id, quantity) VALUES (2, 1, 6); INSERT INTO fish_inventory (fish_farm_"
+"SELECT cause_area, COUNT(DISTINCT donor_id) FROM donations JOIN donors ON donations.donor_id = donors.id GROUP BY cause_area;","```sql
+SELECT cause_area, COUNT(DISTINCT donor_id) AS unique_donors
+FROM donations
+WHERE donor_id IN (SELECT donor_id FROM donors GROUP BY donor_id)
+GROUP BY cause_area;
+```چند بار استفاده شد
+ سلمید نفرسال‌کرز را به نظر می‌رسد.چند بار استفاده شد
+ابهام در رویه کوئری وجود دارد. کوئری به طور استراتژیک به دنبال بخش‌های افراد که در بخش‌های مختلفی ذکر شده‌اند، دنبال می‌کند، در حالی که این امکان وجود دارد که یک donor می‌تواند چندین بخش را به عنوان بخش‌های خود اضافه کند. این کوئری با تکیه بر ""من در بخش‌های زیر خوشحال هستم"" به اشتباه به آن فکر می‌کند و در واقع داده‌ها را به صورت منحصر به فرد بر اساس یک بخش (به طور کلی) ردیابی می کند.
+عرفت‌کرز را برعکس می کند."
+"SELECT SUM(amount) FROM Donations WHERE program = 'Arts & Culture' AND YEAR(donation_date) = 2020 AND donor NOT IN ('Organizations','Companies');","```sql
+SELECT SUM(amount) AS total_donation_amount
+FROM Donations
+WHERE program = 'Arts & Culture' AND donation_date BETWEEN '2020-01-01' AND '2020-12-31';
+```"
+"SELECT founding_year, AVG(employee_count) FROM (SELECT company_name, CASE WHEN industry = 'Technology' THEN founding_year END as founding_year, employee_count FROM Company_Info) t GROUP BY founding_year;","```sql
+SELECT industry, AVG(employee_count) AS average_employees
+FROM Company_Info
+WHERE industry = 'Technology'
+GROUP BY industry;
+```"

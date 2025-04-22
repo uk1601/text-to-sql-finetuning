@@ -421,6 +421,3 @@ if __name__ == "__main__":
         logger.info("Script appears to be running in a non-interactive environment.")
         logger.info("Running interactive inference...")
         run_interactive_inference()
-
-
-

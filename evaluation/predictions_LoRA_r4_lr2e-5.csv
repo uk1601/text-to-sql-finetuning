@@ -6,13 +6,61 @@ WHERE region = 'Atlantic' AND maintenance_cost < 5000;
 ```"
 "INSERT INTO volunteers (id, organization_id, name) VALUES (5, 1, 'Mohammed Ali'), (6, 1, 'Sara Ahmed'), (7, 1, 'Pablo Rodriguez');","```sql
 INSERT INTO organizations (id, name) VALUES (1, 'Doctors Without Borders')
-INSERT INTO volunteers (id, organization_id, name) VALUES (101, 1, 'Volunteer');
-INSERT INTO volunteers (id, organization_id, name) VALUES (102, 1, 'Volunteer');
-INSERT INTO volunteers (id, organization_id, name) VALUES (103, 1, 'Volunteer');
-```چunjukد
-یادداشت: این پاسخ به طور کامل از طریق متن ارائه شده مطابقت دارد و از اطلاعات لازم برای پاسخ داد.‌"
-"SELECT carrier_name, COUNT(*) as count FROM shipment GROUP BY carrier_name;","```sql
-SELECT carrier_name, COUNT(*) AS shipment_count
-FROM shipment
-GROUP BY carrier_name;
+INSERT INTO volunteers (id, organization_id, name) VALUES (101, 1, 'Jane Doe');
+INSERT INTO volunteers (id, organization_id, name) VALUES (102, 1, 'John Smith');
+INSERT INTO volunteers (id, organization_id, name) VALUES (103, 1, 'Alice Brown');
+```چند بار  استفاده کردید.ख्याव करा. Arjun Nov 21, 2023 11:32:05 PM PDT"
+"SELECT carrier_name, COUNT(*) as count FROM shipment GROUP BY carrier_name;",```sql
+"SELECT position, AVG(height_feet + height_inches / 12) as avg_height FROM nba_players_height JOIN nba_players ON nba_players_height.player_id = nba_players.id GROUP BY position;",```sql
+"INSERT INTO crops (id, farm_id, crop, yield, year) VALUES (5, (SELECT id FROM farms WHERE name = 'Nourishing Harvest'), 'amaranth', 50, 2023);","```sql
+INSERT INTO farms (name, location, size)
+SELECT 'amaranth', 'Nourishing Harvest', 1
+WHERE year = 2023;
+```چند svar on how this query works:"
+"SELECT city, COUNT(*) FROM asian_sites WHERE city IN ('Tokyo', 'Seoul') AND type = 'historical' GROUP BY city;",```sql
+"SELECT project_id, project_name, DATEDIFF('day', start_date, end_date) AS project_duration FROM Defense_Project_Timelines WHERE DATEDIFF('day', start_date, end_date) > AVG(DATEDIFF('day', start_date, end_date)) OVER (PARTITION BY NULL);",```sql
+"SELECT r.region_name, (COUNT(m.subscriber_id) * 100.0 / (COUNT(m.subscriber_id) + COUNT(b.subscriber_id))) AS mobile_percentage, (COUNT(b.subscriber_id) * 100.0 / (COUNT(m.subscriber_id) + COUNT(b.subscriber_id))) AS broadband_percentage FROM regions r LEFT JOIN mobile_subscribers m ON r.region_id = m.region_id LEFT JOIN broadband_subscribers b ON r.region_id = b.region_id GROUP BY r.region_id;","(4, 'West'); INSERT INTO database_data (region_id, region_name) VALUES (1, 'North'), (2, 'South'), (3, 'East'), (4, 'West'); SELECT region_id, COUNT(DISTINCT mobile_subscribers.subscriber_id) / COUNT(DISTINCT broadband_subscribers.subscriber_id) AS percentage_mobile_broadband_ratio FROM database_data JOIN mobile_subscribers ON database_data.region_id = mobile_subscribers.region_id JOIN broadband_subscribers ON database_data.region_id = broadband_subscribers.region_id GROUP BY region_id);
 ```"
+SELECT SUM(Salary) FROM Employees;,"```sql
+SELECT SUM(Salary) AS TotalSalaryExpense
+FROM Employees;
+```"
+"SELECT SUM(s.quantity) FROM sales_2 s WHERE s.product = 'shoes' AND s.size IN (8, 9) AND s.country = 'UK';","```sql
+SELECT SUM(quantity) AS total_quantity
+FROM sales_2
+WHERE size = '8' OR size = '9' AND country = 'UK';
+```چندجا اشتباه झाले:
+*   The provided SQL query is not appropriate for the given data. The table contains shoes, not women's shoes.
+*   The query should be designed to find sales of the given sizes within the UK."
+"SELECT * FROM SocialImpactInvestments WHERE Sector = 'Agriculture' AND ESGScore > 85 AND InvestorCountry = 'France' ORDER BY InvestmentDate, ESGScore DESC;","```sql
+SELECT
+    InvestmentID,
+    InvestmentDate,
+    ESGScore,
+    InvestorCountry
+FROM
+    SocialImpactInvestments
+WHERE
+    InvestorCountry = 'France'
+    AND ESGScore > 85
+ORDER BY
+    InvestmentDate DESC;
+```چندتعداد سوالات را در نظر بگیرید.
+ سلمی،
+در اینجا یک SQL پرس و جو برای لیست کردن تمام سرمایه‌گذاری‌های اجتماعی در بخش کشاورزی با امتیاز ESG بالاتر از 85، مرتب شده بر اساس تاریخ سرمایه‌گذاری و امتیاز ESG، با در نظر گرفتن سرمایه‌گذاری‌هایی که توسط سرمایه‌گذاران فرانسوی انجام شده‌اند، آمده است:"
+"SELECT fs.name AS species_name, AVG(av.dissolved_oxygen) AS avg_dissolved_oxygen FROM fish_inventory fi JOIN fish_farms ff ON fi.fish_farm_id = ff.id JOIN fish_species fs ON fi.fish_species_id = fs.id JOIN (SELECT fish_species_id, AVG(dissolved_oxygen) AS dissolved_oxygen FROM water_quality GROUP BY fish_species_id) av ON fs.id = av.fish_species_id GROUP BY fs.name;","10); INSERT INTO fish_inventory (fish_farm_id, fish_species_id, quantity) VALUES (1, 2, 5); INSERT INTO fish_inventory (fish_farm_id, fish_species_id, quantity) VALUES (1, 1, 20); INSERT INTO fish_inventory (fish_farm_id, fish_species_id, quantity) VALUES (2, 2, 12); INSERT INTO fish_inventory (fish_farm_id, fish_species_id, quantity) VALUES (2, 1, 8); INSERT INTO fish_inventory (fish_farm_id, fish_species_id, quantity) VALUES (2, 2, 15); INSERT INTO fish_inventory (fish_farm_id, fish_species_id, quantity) VALUES (2, 1, 11); INSERT INTO fish_inventory (fish_farm_id, fish_species_id, quantity) VALUES (3, 1, 5); INSERT INTO fish_inventory (fish_farm_id, fish_species_id, quantity) VALUES (3, 2, 12); WHERE water_type = 'Salt"
+"SELECT cause_area, COUNT(DISTINCT donor_id) FROM donations JOIN donors ON donations.donor_id = donors.id GROUP BY cause_area;",```sql
+"SELECT SUM(amount) FROM Donations WHERE program = 'Arts & Culture' AND YEAR(donation_date) = 2020 AND donor NOT IN ('Organizations','Companies');","```sql
+SELECT SUM(amount)
+FROM Donations
+WHERE program = 'Arts & Culture' AND donation_date BETWEEN '2020-01-01' AND '2020-12-31';
+```
+ஆங்கிலத்தில் இந்த கேள்விக்கான பதில் இங்கே:"
+"SELECT founding_year, AVG(employee_count) FROM (SELECT company_name, CASE WHEN industry = 'Technology' THEN founding_year END as founding_year, employee_count FROM Company_Info) t GROUP BY founding_year;","```sql
+SELECT AVG(employee_count)
+FROM Company_Info
+WHERE industry = 'Technology'
+AND industry NOT IN ('Media', 'Biotechnology');
+```
+ دانشराज9576 annon2102008 اوबा‍רતેMechanical Solution (Explanation)
+The SQL query efficiently calculates the average number of employees for companies in the 'Technology' industry, categorized by their founding year."

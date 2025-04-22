@@ -52,9 +52,9 @@ class Config:
 
     # --- Dataset Arguments ---
     dataset_name: str = "gretelai/synthetic_text_to_sql" # Hugging Face dataset identifier
-    train_subset_size: int = 100 # Number of training examples (-1 for all)
-    val_subset_size: int = 20    # Number of validation examples (-1 for all)
-    test_subset_size: int = 10   # Number of test examples (-1 for all)
+    train_subset_size: int = 5000 # Number of training examples (-1 for all)
+    val_subset_size: int = 750    # Number of validation examples (-1 for all)
+    test_subset_size: int = 1000   # Number of test examples (-1 for all)
     validation_split_percentage: float = 0.15 # % of train for validation if needed
 
     # --- Training Hyperparameters ---

@@ -3,20 +3,70 @@ reference,prediction
 SELECT name, maintenance_cost
 FROM MilitaryEquipment
 WHERE region = 'Atlantic' AND maintenance_cost < 5000;
-```"
+```چند توضیح آورده ام:"
 "INSERT INTO volunteers (id, organization_id, name) VALUES (5, 1, 'Mohammed Ali'), (6, 1, 'Sara Ahmed'), (7, 1, 'Pablo Rodriguez');","```sql
-INSERT INTO organizations (id, name)
-SELECT 1, 'Doctors Without Borders'
-WHERE id NOT IN (SELECT id FROM volunteers);
-```"
+INSERT INTO organizations (id, name) VALUES (1, 'Doctors Without Borders')
+INSERT INTO volunteers (id, organization_id, name) VALUES (1, 1, 'Volunteer1');
+INSERT INTO volunteers (id, organization_id, name) VALUES (1, 1, 'Volunteer2');
+INSERT INTO volunteers (id, organization_id, name) VALUES (1, 1, 'Volunteer3');
+```چुक‌ها
+ سلمرن هابز تنظیمات را با یک جدول 'Organization' و جدول 'Volunteer' به صورت زیر تنظیم می کند:"
 "SELECT carrier_name, COUNT(*) as count FROM shipment GROUP BY carrier_name;","```sql
+SELECT carrier_name, COUNT(*) AS shipment_count
+FROM shipment
+GROUP BY carrier_name;
+```"
+"SELECT position, AVG(height_feet + height_inches / 12) as avg_height FROM nba_players_height JOIN nba_players ON nba_players_height.player_id = nba_players.id GROUP BY position;","```sql
+SELECT position, AVG(height_inches) AS avg_height
+FROM nba_players_height
+GROUP BY position;
+```چند درستی:"
+"INSERT INTO crops (id, farm_id, crop, yield, year) VALUES (5, (SELECT id FROM farms WHERE name = 'Nourishing Harvest'), 'amaranth', 50, 2023);",```sql
+"SELECT city, COUNT(*) FROM asian_sites WHERE city IN ('Tokyo', 'Seoul') AND type = 'historical' GROUP BY city;",```sql
+"SELECT project_id, project_name, DATEDIFF('day', start_date, end_date) AS project_duration FROM Defense_Project_Timelines WHERE DATEDIFF('day', start_date, end_date) > AVG(DATEDIFF('day', start_date, end_date)) OVER (PARTITION BY NULL);","```sql
+SELECT project_name
+FROM Defense_Project_Timelines
+WHERE end_date > (SELECT AVG(end_date) FROM Defense_Project_Timelines);
+```
+புளித்த குறியீடுஆரம்பநிலை குறியீடுஆரம்பநிலை குறியீடுஆரம்பநிலை குறியீடுஆரம்பநிலை குறியீடுஆரம்பநிலை குறியீடுஆரம்பநிலை குறியீடுஆரம்பநிலை குறியீடுஆரம்பநிலை குறியீடுஆரம்பநிலை குறியீடுஆரம்பநிலை குறியீடுஆரம்பநிலை குறியீடுஆரம்பநிலை குறியீடுஆரம்பநிலை குறியீடு)"
+"SELECT r.region_name, (COUNT(m.subscriber_id) * 100.0 / (COUNT(m.subscriber_id) + COUNT(b.subscriber_id))) AS mobile_percentage, (COUNT(b.subscriber_id) * 100.0 / (COUNT(m.subscriber_id) + COUNT(b.subscriber_id))) AS broadband_percentage FROM regions r LEFT JOIN mobile_subscribers m ON r.region_id = m.region_id LEFT JOIN broadband_subscribers b ON r.region_id = b.region_id GROUP BY r.region_id;","(4, 'West');
+SELECT region_name, SUM(CASE WHEN subscriber_id IN (SELECT subscriber_id FROM mobile_subscribers WHERE region_id IN (SELECT region_id FROM broadband_subscribers)) THEN 1 ELSE 0 END) * 100.0 / (SELECT COUNT(*) FROM mobile_subscribers WHERE region_id IN (SELECT region_id FROM broadband_subscribers)) AS percentage_mobile_broadband
+FROM mobile_subscribers;
+```"
+SELECT SUM(Salary) FROM Employees;,"```sql
+SELECT SUM(Salary) AS TotalSalaryExpense
+FROM Employees;
+```"
+"SELECT SUM(s.quantity) FROM sales_2 s WHERE s.product = 'shoes' AND s.size IN (8, 9) AND s.country = 'UK';",```sql
+"SELECT * FROM SocialImpactInvestments WHERE Sector = 'Agriculture' AND ESGScore > 85 AND InvestorCountry = 'France' ORDER BY InvestmentDate, ESGScore DESC;","```sql
+SELECT InvestmentID, InvestmentDate, ESGScore, InvestorCountry
+FROM SocialImpactInvestments
+WHERE Sector = 'Agriculture' AND ESGScore > 85
+AND InvestorCountry = 'France'
+ORDER BY InvestmentDate DESC;
+```چندतरी बाते:
+*   I am using the `WHERE` clause to filter the data by sector ('Agriculture'), ESG score, and InvestorCountry.
+*   I am filtering the data further using the `AND` operator to combine these conditions.
+*   I am using the `ORDER BY` clause to sort the results by investment date in descending order.Final Answer: The final answer is:"
+"SELECT fs.name AS species_name, AVG(av.dissolved_oxygen) AS avg_dissolved_oxygen FROM fish_inventory fi JOIN fish_farms ff ON fi.fish_farm_id = ff.id JOIN fish_species fs ON fi.fish_species_id = fs.id JOIN (SELECT fish_species_id, AVG(dissolved_oxygen) AS dissolved_oxygen FROM water_quality GROUP BY fish_species_id) av ON fs.id = av.fish_species_id GROUP BY fs.name;","10); INSERT INTO fish_inventory (fish_farm_id, fish_species_id, quantity) VALUES (1, 2, 5); INSERT INTO fish_inventory (fish_farm_id, fish_species_id, quantity) VALUES (1, 1, 3); INSERT INTO fish_inventory (fish_farm_id, fish_species_id, quantity) VALUES (1, 2, 2); INSERT INTO fish_inventory (fish_farm_id, fish_species_id, quantity) VALUES (2, 1, 8); INSERT INTO fish_inventory (fish_farm_id, fish_species_id, quantity) VALUES (2, 2, 4); INSERT INTO fish_inventory (fish_farm_id, fish_species_id, quantity) VALUES (3, 1, 12); INSERT INTO fish_inventory (fish_farm_id, fish_species_id, quantity) VALUES (3, 2, 6); INSERT INTO fish_inventory (fish_farm_id, fish_species_id, quantity) VALUES (3, 1, 7); INSERT INTO fish_inventory (fish_farm_id"
+"SELECT cause_area, COUNT(DISTINCT donor_id) FROM donations JOIN donors ON donations.donor_id = donors.id GROUP BY cause_area;","```sql
 SELECT
-    carrier_name,
-    COUNT(*) AS shipment_count
-FROM
-    shipment
+    d.cause_area,
+    COUNT(DISTINCT d.donor_id) AS unique_donors
+FROM donations AS d
+JOIN donors AS d2
+ON d.donor_id = d2.id
 GROUP BY
-    carrier_name
-ORDER BY
-    carrier_name;
+    d.cause_area;
+```ஆயினும், இந்தக் கேள்விக்கான சரியான SQL வினவல் இதோ:"
+"SELECT SUM(amount) FROM Donations WHERE program = 'Arts & Culture' AND YEAR(donation_date) = 2020 AND donor NOT IN ('Organizations','Companies');","```sql
+SELECT SUM(amount) AS total_donations
+FROM Donations
+WHERE program = 'Arts & Culture' AND donation_date BETWEEN '2020-01-01' AND '2020-12-31';
+```"
+"SELECT founding_year, AVG(employee_count) FROM (SELECT company_name, CASE WHEN industry = 'Technology' THEN founding_year END as founding_year, employee_count FROM Company_Info) t GROUP BY founding_year;","```sql
+SELECT AVG(employee_count) AS average_employees
+FROM Company_Info
+WHERE industry = 'Technology'
+AND industry NOT IN ('Media', 'Biotechnology');
 ```"

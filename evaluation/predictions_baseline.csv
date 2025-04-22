@@ -16,3 +16,57 @@ FROM shipment
 GROUP BY carrier_name;
 ```
 ச்செய்யும் பணிக்கு நன்றி! شمارهக்கான SQL வினவல் இங்கே:"
+"SELECT position, AVG(height_feet + height_inches / 12) as avg_height FROM nba_players_height JOIN nba_players ON nba_players_height.player_id = nba_players.id GROUP BY position;","```sql
+SELECT
+    position,
+    AVG(height_inches) AS average_height
+FROM
+    nba_players_height
+GROUP BY
+    position;
+```"
+"INSERT INTO crops (id, farm_id, crop, yield, year) VALUES (5, (SELECT id FROM farms WHERE name = 'Nourishing Harvest'), 'amaranth', 50, 2023);","```sql
+INSERT INTO farms (id, name, location, size)
+SELECT 1, 'amaranth', 'Mexico', 120.0
+WHERE id = 1;
+```چندतरीه که این پرسنه انجام میشه:"
+"SELECT city, COUNT(*) FROM asian_sites WHERE city IN ('Tokyo', 'Seoul') AND type = 'historical' GROUP BY city;","```sql
+SELECT COUNT(*)
+FROM asian_sites
+WHERE city IN ('Tokyo', 'Seoul');
+```"
+"SELECT project_id, project_name, DATEDIFF('day', start_date, end_date) AS project_duration FROM Defense_Project_Timelines WHERE DATEDIFF('day', start_date, end_date) > AVG(DATEDIFF('day', start_date, end_date)) OVER (PARTITION BY NULL);",```sql
+"SELECT r.region_name, (COUNT(m.subscriber_id) * 100.0 / (COUNT(m.subscriber_id) + COUNT(b.subscriber_id))) AS mobile_percentage, (COUNT(b.subscriber_id) * 100.0 / (COUNT(m.subscriber_id) + COUNT(b.subscriber_id))) AS broadband_percentage FROM regions r LEFT JOIN mobile_subscribers m ON r.region_id = m.region_id LEFT JOIN broadband_subscribers b ON r.region_id = b.region_id GROUP BY r.region_id;","(4, 'West');
+The query to calculate the percentage of mobile and broadband subscribers in each region."
+SELECT SUM(Salary) FROM Employees;,"```sql
+SELECT SUM(Salary) FROM Employees;
+```چندitionally, this is a potentially incorrect query.  It assumes there's a table called 'Employees' with a column named 'Salary'.  The provided table structure is inconsistent."
+"SELECT SUM(s.quantity) FROM sales_2 s WHERE s.product = 'shoes' AND s.size IN (8, 9) AND s.country = 'UK';","```sql
+SELECT SUM(quantity)
+FROM sales_2
+WHERE size = '8' OR size = '9' AND country = 'UK';
+```புலம்பன் பதிலளிக்கும்போது, குறிப்பிட்ட தயாரிப்பு வகைகளை எவ்வாறு அடைவது என்பதற்கான SQL வினவல் இங்கே கொடுக்கப்பட்டுள்ளது."
+"SELECT * FROM SocialImpactInvestments WHERE Sector = 'Agriculture' AND ESGScore > 85 AND InvestorCountry = 'France' ORDER BY InvestmentDate, ESGScore DESC;","```sql
+SELECT
+    InvestmentID,
+    InvestmentDate,
+    ESGScore,
+    InvestorCountry
+FROM
+    SocialImpactInvestments
+WHERE
+    InvestorCountry = 'France'
+    AND ESGScore > 85
+ORDER BY
+    InvestmentDate DESC;
+```Exercise:"
+"SELECT fs.name AS species_name, AVG(av.dissolved_oxygen) AS avg_dissolved_oxygen FROM fish_inventory fi JOIN fish_farms ff ON fi.fish_farm_id = ff.id JOIN fish_species fs ON fi.fish_species_id = fs.id JOIN (SELECT fish_species_id, AVG(dissolved_oxygen) AS dissolved_oxygen FROM water_quality GROUP BY fish_species_id) av ON fs.id = av.fish_species_id GROUP BY fs.name;","10); INSERT INTO fish_inventory (fish_farm_id, fish_species_id, quantity) VALUES (1, 2, 5); INSERT INTO fish_inventory (fish_farm_id, fish_species_id, quantity) VALUES (1, 1, 15); INSERT INTO fish_inventory (fish_farm_id, fish_species_id, quantity) VALUES (1, 2, 8);
+The query to calculate the average dissolved oxygen level for each species in the fish farms."
+"SELECT cause_area, COUNT(DISTINCT donor_id) FROM donations JOIN donors ON donations.donor_id = donors.id GROUP BY cause_area;",```sql
+"SELECT SUM(amount) FROM Donations WHERE program = 'Arts & Culture' AND YEAR(donation_date) = 2020 AND donor NOT IN ('Organizations','Companies');",```sql
+"SELECT founding_year, AVG(employee_count) FROM (SELECT company_name, CASE WHEN industry = 'Technology' THEN founding_year END as founding_year, employee_count FROM Company_Info) t GROUP BY founding_year;","```sql
+SELECT AVG(employee_count)
+FROM Company_Info
+WHERE industry = 'Technology'
+AND industry NOT IN ('Media', 'Biotechnology');
+```"

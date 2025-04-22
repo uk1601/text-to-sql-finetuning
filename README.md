@@ -9,7 +9,7 @@ A comprehensive implementation of Parameter-Efficient Fine-Tuning (PEFT) using L
 
 ## 📊 Project Overview
 
-This project demonstrates the application of LoRA fine-tuning to adapt a pre-trained language model for the specialized task of converting natural language requests into SQL queries. By using parameter-efficient techniques, we achieve significant performance improvements while minimizing computational resources.
+This project demonstrates the application of LoRA fine-tuning to adapt a pre-trained language model for the specialized task of converting natural language requests into SQL queries. By using parameter-efficient techniques, we achieve performance improvements while working within computational resource constraints.
 
 **Key Features:**
 - 🔍 Comprehensive exploratory data analysis of text-to-SQL dataset
@@ -117,6 +117,19 @@ graph TD
     G[Text-to-SQL<br>Training Data] --> E
 ```
 
+### Hardware Constraints and Adaptations
+
+This project was implemented under significant hardware constraints:
+- **Apple Silicon (MPS)** instead of dedicated GPUs
+- **Limited memory** requiring careful batch size management
+- **Storage limitations** affecting dataset sampling strategies
+
+These constraints necessitated several optimizations:
+- Gradient checkpointing for memory efficiency
+- Small batch sizes with gradient accumulation
+- Strategic subset selection for training
+- Early stopping to prevent overfitting on smaller datasets
+
 ### Base Model Selection
 
 **Google's Gemma-3-1b-it** was selected as the base model for the following reasons:
@@ -207,43 +220,66 @@ The experimental results compare the performance of the baseline model against t
 
 | Model | BLEU | ROUGE-1 | ROUGE-2 | ROUGE-L | Exact Match |
 |-------|------|---------|---------|---------|-------------|
-| Baseline | 0.2362 | 0.6774 | 0.5767 | 0.6774 | 0.0000 |
-| LoRA r=4 | 0.3177 | 0.7415 | 0.6719 | 0.7415 | 0.0000 |
-| LoRA r=8 | 0.1981 | 0.3743 | 0.3055 | 0.3743 | 0.0000 |
-| LoRA r=16 | 0.4384 | 0.7073 | 0.5941 | 0.6731 | 0.0000 |
+| Baseline | 0.2026 | 0.4282 | 0.2836 | 0.3917 | 0.0000 |
+| LoRA r=4 | 0.1704 | 0.3590 | 0.2268 | 0.3237 | 0.0000 |
+| LoRA r=8 | 0.1700 | 0.5166 | 0.3289 | 0.4806 | 0.0000 |
+| LoRA r=16 | 0.2186 | 0.4673 | 0.3283 | 0.4454 | 0.0000 |
 
 ### BLEU Score Comparison
 
 ```
-  0.5 |                                     
-      |                                     
-  0.4 |                            ▇        
-      |                            █        
-  0.3 |             ▇              █        
-      |             █              █        
-  0.2 |    ▇        █     ▇        █        
-      |    █        █     █        █        
-  0.1 |    █        █     █        █        
-      |    █        █     █        █        
-  0.0 +----█--------█-----█--------█-------
+  0.25 |                                     
+       |                                     
+  0.20 |    ▇                       ▇        
+       |    █                       █        
+  0.15 |    █        ▇     ▇        █        
+       |    █        █     █        █        
+  0.10 |    █        █     █        █        
+       |    █        █     █        █        
+  0.05 |    █        █     █        █        
+       |    █        █     █        █        
+  0.00 +----█--------█-----█--------█-------
            Baseline  r=4   r=8     r=16    
+```
+
+### ROUGE-1 Score Comparison
+
+```
+  0.6 |                                     
+      |                     ▇               
+  0.5 |                     █               
+      |                     █     ▇         
+  0.4 |    ▇                █     █         
+      |    █                █     █         
+  0.3 |    █     ▇          █     █         
+      |    █     █          █     █         
+  0.2 |    █     █          █     █         
+      |    █     █          █     █         
+  0.1 |    █     █          █     █         
+      |    █     █          █     █         
+  0.0 +----█-----█----------█-----█--------
+          Baseline r=4      r=8   r=16    
 ```
 
 ### Key Findings
 
-1. **LoRA r=16** achieved the highest BLEU score (0.4384), showing a 86% improvement over the baseline
-2. **LoRA r=4** demonstrated strong performance across ROUGE metrics with over 74% on ROUGE-1
-3. **LoRA r=8** unexpectedly underperformed, even compared to the baseline, suggesting optimization issues
+1. **LoRA r=8** achieved the strongest ROUGE scores overall, with a 21% improvement in ROUGE-1 over baseline (0.5166 vs 0.4282)
+2. **LoRA r=16** delivered the best BLEU score (0.2186), showing a modest 8% improvement over baseline
+3. **LoRA r=4** underperformed relative to other models, suggesting that the rank was insufficient for this task
 4. No model achieved exact matches, highlighting the challenging nature of the text-to-SQL task
-5. Higher LoRA rank (r=16) generally led to better performance, indicating that increased parameter capacity benefits this task
+5. Training dynamics showed consistent convergence, with the r=16 model achieving the lowest eval loss (0.574)
 
 ### Error Analysis
 
-Analysis of prediction errors revealed several common issues:
-- Challenges with complex joins and nested queries
-- Schema misinterpretation in ambiguous contexts
-- Inconsistent SQL formatting styles
-- Difficulty with domain-specific terminology
+Analysis of prediction errors revealed several issues that signal areas for improvement:
+
+1. **Multilingual Artifacts**: Some generated outputs contained non-English text segments (observed in Tamil, Hindi, Persian)
+2. **Code Formatting Inconsistencies**: SQL was sometimes wrapped in backticks, sometimes not
+3. **Schema Misinterpretation**: Models occasionally used incorrect column names or table structures
+4. **Query Complexity Challenges**: Performance degraded significantly on complex joins and nested queries
+5. **Incomplete Outputs**: Some queries were truncated or partially generated
+
+These issues suggest that while LoRA adaptation improves performance, additional refinement is needed for production-quality results.
 
 ## 🚀 Inference Pipeline
 
@@ -278,7 +314,7 @@ sequenceDiagram
 # Load model and tokenizer
 config = InferenceConfig()
 tokenizer = load_inference_tokenizer(config)
-model = load_inference_model("models/gemma3_finetuned_20250421_163914_r16_lr2e-5/final_adapter", config, device)
+model = load_inference_model("models/gemma3_finetuned_20250421_224200_r16_lr2e-5/final_adapter", config, device)
 
 # Prepare input
 prompt = "Find all customers who made purchases over $1000 in the last month"
@@ -348,27 +384,38 @@ python inference.py
 
 ## 📝 Conclusion and Future Work
 
-This project demonstrates the effectiveness of LoRA fine-tuning for adapting large language models to the specialized text-to-SQL task. The experiments reveal that higher LoRA rank values generally yield better performance, though the relationship is not strictly linear (as seen with the r=8 results).
+This project demonstrates the potential of LoRA fine-tuning for adapting large language models to the specialized text-to-SQL task, even when working under significant hardware constraints. The experiments reveal both promising improvements and clear areas for enhancement.
 
 ### Key Takeaways
 
-1. Parameter-efficient fine-tuning can significantly improve specialized task performance without full model retraining
-2. LoRA rank selection critically impacts adaptation performance
-3. Gemma-3-1b-it provides a strong foundation for text-to-SQL generation
-4. Domain-specific formatting and comprehensive context are essential for optimal results
+1. Parameter-efficient fine-tuning with LoRA provides a practical approach for adapting LLMs on consumer hardware
+2. Different LoRA ranks show varied effectiveness across different evaluation metrics
+3. Model performance varies significantly based on query complexity and domain
+4. Hardware constraints significantly impact training stability and outcomes
 
-### Limitations
+### Hardware Limitations
 
-- Lack of exact matches suggests room for further optimization
-- Limited test set size may affect generalization assessment
-- Performance variability across model runs requires further investigation
-- Computational constraints limited exploration of larger rank values
+The project faced several key constraints that impacted results:
+
+- **Limited GPU Access**: Using Apple MPS instead of CUDA-enabled GPUs restricted batch sizes and training speed
+- **Memory Constraints**: Prevented full dataset usage and limited model size options
+- **Storage Limitations**: Affected checkpointing strategy and dataset caching
+- **Training Time**: Extended training periods were not feasible due to resource limitations
 
 ### Future Directions
 
-- Explore hybrid approaches combining LoRA with other PEFT techniques
-- Investigate domain-specific pre-training before fine-tuning
-- Implement SQL execution validation as part of the evaluation
-- Test with larger models (Gemma-7b, Gemma-27b) to assess scalability
-- Expand evaluation to include execution accuracy on real databases
-- Implement adversarial testing to improve robustness
+With access to more substantial computational resources, several improvements would be possible:
+
+1. **Full Dataset Training**: Training on the complete dataset rather than subsets
+2. **Distributed Training**: Implementing DDP (Distributed Data Parallel) across multiple GPUs
+3. **Quantization**: Applying 8-bit or 4-bit quantization to enable larger models (Gemma-7b/27b)
+4. **Hyperparameter Optimization**: More extensive search for optimal learning rates, batch sizes, etc.
+5. **Extended Training**: Running for more epochs to achieve better convergence
+6. **Improved Evaluation**: Using execution accuracy on real databases as an additional metric
+7. **Ensemble Approaches**: Combining multiple fine-tuned models for improved performance
+
+Despite hardware limitations, this project demonstrates that meaningful improvements in text-to-SQL capabilities can be achieved through careful application of parameter-efficient fine-tuning techniques, even on consumer-grade hardware.
+
+## 📜 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
